@@ -1,16 +1,33 @@
 // LOAD DATA
 // We are linking our routes to a series of "data" sources.
 // These data sources hold arrays of information on table-data, waitinglist, etc.
-const NotesData = require('../db/db');
+
 const router = require('express').Router();
 const fs = require('fs');
+const path = require('path');
 const { v1: uuidv1 } = require('uuid');
 
+
+// Re-read data each time
+function readNotes() {
+  const backendNotes = fs.readFileSync(path.join(__dirname, "../db/db.json"));
+  return JSON.parse(backendNotes)
+}
+
+// Re-write data each time
+function writeNotes() {
+  const backendNotes = readNotes();
+  const frontendNotes = fs.writeFileSync(path.join(__dirname,'../db/db.json'), JSON.stringify(backendNotes));
+  return frontendNotes
+}
 
 // ROUTING
 
 // API GET Requests
-router.get('/notes', (req, res) => res.json(NotesData));
+router.get('/notes', (req, res) => {
+  const backendNotes = readNotes();
+  res.json(backendNotes);
+});
 
 // API POST Requests
 router.post('/notes', (req, res) => {
@@ -20,32 +37,29 @@ router.post('/notes', (req, res) => {
     text: req.body.text,
     id: uuidv1(),
   };
+  const NotesData = readNotes();
   // console.log(newNote);
   NotesData.push(newNote);
   // write data to file
-  fs.writeFile('./db/db.json', JSON.stringify(NotesData), (err, newNotes) => {
+  const newNoteData = writeNotes();
+  // fs.writeFile('./db/db.json', JSON.stringify(NotesData), (err, newNotes) => {
 
-  });
-  res.json(newNote);
+  // });
+  res.json(newNoteData);
 });
 
 // Delete Notes
 router.delete('/notes/:id', (req, res) => {
-  var newNoteArray = NotesData.filter(element => {
-    if (element.id !== req.params.id) {
-      return element;
-    } else {
-      console.log(element);
-    }
-
-  });
+  const NotesData = readNotes();
+  var newNoteArray = NotesData.filter(element => element.id !== req.params.id);
   console.log(newNoteArray);
 
   // this this what pushes the updated db.json file to render on the front end
-  fs.writeFile('./db/db.json', JSON.stringify(newNoteArray), (err, updatedNotes) => {
+  const newNoteData = writeNotes();
+  // fs.writeFile('./db/db.json', JSON.stringify(newNoteArray), (err, updatedNotes) => {
 
-  });
-  res.json(newNoteArray);
+  // });
+  res.json(newNoteData);
 });
 
 
