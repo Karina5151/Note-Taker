@@ -16,7 +16,7 @@ function writeNotes(notesArray) {
   fs.writeFileSync(path.join(__dirname, '../db/db.json'), JSON.stringify(notesArray));
 }
 
-// ROUTING---------------------------------------------
+// ROUTING--------------------------------------------
 
 // API GET Requests
 router.get('/notes', (req, res) => {
