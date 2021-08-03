@@ -1,7 +1,4 @@
 // LOAD DATA
-// We are linking our routes to a series of "data" sources.
-// These data sources hold arrays of information on table-data, waitinglist, etc.
-
 const router = require('express').Router();
 const fs = require('fs');
 const path = require('path');
@@ -15,13 +12,11 @@ function readNotes() {
 }
 
 // Re-write data each time
-function writeNotes() {
-  const backendNotes = readNotes();
-  const frontendNotes = fs.writeFileSync(path.join(__dirname,'../db/db.json'), JSON.stringify(backendNotes));
-  return frontendNotes
+function writeNotes(notesArray) {
+  fs.writeFileSync(path.join(__dirname, '../db/db.json'), JSON.stringify(notesArray));
 }
 
-// ROUTING
+// ROUTING---------------------------------------------
 
 // API GET Requests
 router.get('/notes', (req, res) => {
@@ -38,28 +33,25 @@ router.post('/notes', (req, res) => {
     id: uuidv1(),
   };
   const NotesData = readNotes();
-  // console.log(newNote);
   NotesData.push(newNote);
+  
   // write data to file
-  const newNoteData = writeNotes();
-  // fs.writeFile('./db/db.json', JSON.stringify(NotesData), (err, newNotes) => {
+  writeNotes(NotesData);
+  // Write New Note to Front End
+  res.json(NotesData);
 
-  // });
-  res.json(newNoteData);
 });
 
-// Delete Notes
+// DELETE NOTES
 router.delete('/notes/:id', (req, res) => {
   const NotesData = readNotes();
   var newNoteArray = NotesData.filter(element => element.id !== req.params.id);
   console.log(newNoteArray);
 
-  // this this what pushes the updated db.json file to render on the front end
-  const newNoteData = writeNotes();
-  // fs.writeFile('./db/db.json', JSON.stringify(newNoteArray), (err, updatedNotes) => {
-
-  // });
-  res.json(newNoteData);
+  // write data to file
+  writeNotes(newNoteArray);
+  // Write New Array to Front End
+  res.json(newNoteArray);
 });
 
 

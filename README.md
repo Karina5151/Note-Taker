@@ -3,7 +3,7 @@
  &nbsp;&nbsp;&nbsp;&nbsp;![Repo size badge](https://img.shields.io/github/repo-size/Karina5151/Note-Taker?color=success) &nbsp;&nbsp;&nbsp;&nbsp;![Language % badge](https://img.shields.io/github/languages/top/Karina5151/Note-Taker) &nbsp;&nbsp;&nbsp;&nbsp;
 
 ## :memo: Description
-  This web application can be used to write and save notes.
+  This web application can be used to write, save, and delete notes.
 
 
 ## :trophy: Table of Contents
@@ -25,7 +25,7 @@ npm i
 User must then run `node index.js` in the terminal. The application will then be listening on port 8080. Open your browser and put `localhost:8080` in the address bar of the browser page to see the application on your local device.
   
 ## Usage
-To generate notes for the user to stay organzied and keep track of tasks or thoughts in one place. 
+To generate notes for the user to stay organzied and keep track of tasks or thoughts in one place. They may delete notes as well. 
 
 Launch Heroku deployed web application [here](https://note-taker5151.herokuapp.com/)
 
