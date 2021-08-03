@@ -26,7 +26,6 @@ router.post('/notes', (req, res) => {
   fs.writeFile('./db/db.json', JSON.stringify(NotesData), (err, newNotes) => {
 
   });
-  
   res.json(newNote);
 });
 
@@ -41,7 +40,8 @@ router.delete('/notes/:id', (req, res) => {
 
   });
   console.log(newNoteArray);
-  // this this what pushes the updated db.json file to render back out in the browser
+
+  // this this what pushes the updated db.json file to render on the front end
   fs.writeFile('./db/db.json', JSON.stringify(newNoteArray), (err, updatedNotes) => {
 
   });
@@ -53,3 +53,6 @@ module.exports = router;
 
 
 
+// Things left to do:
+// 1. Fix the front end to update upon deletion of note.
+// 2. Read Me (add delete feature to ReadMe if fixed)
